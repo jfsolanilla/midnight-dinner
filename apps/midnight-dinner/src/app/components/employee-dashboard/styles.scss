@@ -1,0 +1,13 @@
+.employee-dashboard {
+    margin: 20px;
+
+    &__search-wrapper {
+        align-items: center;
+        display: flex;
+        margin-bottom: 20px;
+    }
+
+    &__employee-label {
+        margin-right: 10px;
+    }
+}
