@@ -1,12 +1,9 @@
-.search-element {
-    border: 1px solid gray;
+.search-icon {
+    padding-left: 9px;
+    height: 100%;
+    position: absolute;
+    pointer-events: none;
     display: flex;
-    width: 200px;
-
-    &__input {
-        border: none;
-        font-size: 13px;
-        width: 165px;
-        margin-left: 5px;
-    }
+    align-items: center;
+    justify-content: center;
 }

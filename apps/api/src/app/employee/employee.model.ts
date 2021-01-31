@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { Field, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 export default class Employee {
@@ -11,7 +11,7 @@ export default class Employee {
     @Field({ nullable: true })
     jobTitle: string;
 
-    @Field(Int)
+    @Field({ nullable: true })
     age: number;
 
     @Field({ nullable: true })

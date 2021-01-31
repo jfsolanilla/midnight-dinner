@@ -37,7 +37,7 @@ export class EmployeeService {
    * @returns List of employees as an array
    */
   get(): Employee[] {
-    return this.employees.filter(employee => !this.employeesRemoved.includes(employee.id));
+    return this.employees.filter((employee: Employee) => !this.employeesRemoved.includes(employee.id));
   }
 
   /**
@@ -45,7 +45,7 @@ export class EmployeeService {
    * @returns List of employees as an array (if more than one register matches the value)
    */
   getByName(name: string): Employee[] {
-    return this.employees.filter(employee => employee.name.includes(name));
+    return this.employees.filter((employee: Employee) => employee.name.includes(name));
   }
 
   /**
