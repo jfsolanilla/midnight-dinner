@@ -37,13 +37,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 export default function SearchElement({clickHandler}: SearchProps) {
   const classes = useStyles();
+
   return (
     <div className={classes.search}>
       <div className="search-icon">
         <SearchIcon />
       </div>
       <OutlinedInput
-        placeholder="Search…"
+        placeholder="Search by name"
         classes={{
           input: classes.inputInput,
         }}

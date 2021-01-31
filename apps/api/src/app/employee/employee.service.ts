@@ -74,7 +74,7 @@ export class EmployeeService {
     }
 
 		switch (dataType) {
-			case "TEXT":
+			case 'TEXT':
 				employees.sort((a, b) => {
 					const nameA = a[sortKey].toUpperCase();
           const nameB = b[sortKey].toUpperCase();
@@ -84,7 +84,7 @@ export class EmployeeService {
 
         break;
 
-			case "NUMERIC":
+			case 'NUMERIC':
 				employees.sort((a, b) => {
 					const nameA = a[sortKey] ? +a[sortKey] : 0;
           const nameB = b[sortKey] ? +b[sortKey] : 0;
@@ -94,7 +94,7 @@ export class EmployeeService {
 
         break;
 
-			case "DATE":
+			case 'DATE':
 				employees.sort((a, b) => {
 					const nameA = new Date(a[sortKey]);
           const nameB = new Date(b[sortKey]);
@@ -117,7 +117,7 @@ export class EmployeeService {
    */
   private getSortedBasedOnDirection(sortDirection: string, valueA: any, valueB: any): number {
 		switch (sortDirection) {
-			case "ASC":
+			case 'ASC':
 				if (valueA < valueB) {
 					return -1;
         }
@@ -128,7 +128,7 @@ export class EmployeeService {
 
         break;
 
-			case "DESC":
+			case 'DESC':
 				if (valueA < valueB) {
 					return 1;
         }

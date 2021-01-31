@@ -10,60 +10,60 @@ import SearchElement from './../search-element';
 import { ContactSupportOutlined } from '@material-ui/icons';
 
 export default function EmployeeDashboard () {
+  const [employeeName, setEmployeeName] = useState<string>('');
+  const [employeeId, setEmployeeId] = useState<string>('');
+  const [{ sortKey, sortDirection, dataType }, setEmployeeName] = useState<>('');
   const { loading, data: allEmployees } = useQuery<{ employees: Employee[] }>(
     GET_EMPLOYEES
   );
+  const { data: employeeByName } = useQuery<{ employees: Employee[] }>(
+    GET_EMPLOYEES_BY_NAME,
+    {
+      variables: { name: employeeName }
+    }
+  );
+  const [removeEmployee, { data: remainingEmployees }] = useMutation(
+    REMOVE_EMPLOYEE
+  );
+  const { data: employeesSorted } = useQuery<{ employees: Employee[] }>(
+    SORT_EMPLOYEES,
+    {
+      variables: { sortKey: 'name', sortDirection: 'DESC', dataType: 'TEXT' },
+    }
+  );
 
-  //************************************* */
-  // Used to remove employee
-  // const [employeeId, setEmployeeId] = useState<string>('');
-  // const [removeEmployee, { data }] = useMutation<{ employees: Employee[] }>(REMOVE_EMPLOYEE);
+  /**
+   * Executed when removing an employee
+   */
+  const handleRemove = (removeValue: string): void => {
+    if (window.confirm('Do you want to delete this employee?')) {
+      removeEmployee({ variables: { id: removeValue } });
+      setEmployeeId('');
+    }
+  }
 
-  // useEffect(() => {
-  //   if (data) {
-  //     const { removeEmployee } = data;
-  //     const { id } = removeEmployee;
-  //   }
-  // }, [data]);
-
-  // const handleRemoveEmployee = (employeeId: string): void => {
-  //   if (window.confirm('Do you want to delete this employee?')) {
-  //     removeEmployee({ variables: { id: employeeId } });
-  //     setEmployeeId('');
-  //   }
+  /**
+   * Handles search for a particular employee
+   * @params searchValue - Value to be searched
+   */
+  // IMPORTANT THIS FUNCTION PROBABLY NOT NEEDED - ONLY WITH setEmployeeName WOULD BE ENOUGH
+  // const handleSearch = (searchValue: string): void => {
+  //   setEmployeeName(searchValue);
   // }
-  //************************************* */
-  // Used to sort employees
-  const { data: employeesSorted } = useQuery<{ employees: Employee[] }>(SORT_EMPLOYEES, {
-    variables: { sortKey: 'name', sortDirection: 'DESC', dataType: 'TEXT' }
-  });
-
-  //************************************* */
-    // Used to get employees by name
-    const { data: employeeByName } = useQuery<{ employees: Employee[] }>(GET_EMPLOYEES_BY_NAME, {
-      variables: { name: searchValue }
-    });
-
 
   // if (loading) return <p>Loading ...</p>;
-
-  const ClickHandler = (searchValue: string) => {
-
-
-    console.log(employeeByName);
-  }
 
   return (
     <div className="employee-dashboard">
       <div className="employee-dashboard__search-wrapper">
         <span className="employee-dashboard__employee-label">Employees</span>
         <span>
-          <SearchElement clickHandler={ClickHandler} />
+          <SearchElement clickHandler={setEmployeeName} />
         </span>
       </div>
-      {/* <button onClick={ () => HandleSortEmployees('name', 'ASC', 'TEXT') }>
+      <button onClick={ () => handleRemove('2') }>
         <span>Login or Register</span>
-      </button> */}
+      </button>
       <ListOfItems />
     </div>
   );
