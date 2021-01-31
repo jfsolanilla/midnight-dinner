@@ -5,14 +5,14 @@ import { useQuery } from '@apollo/react-hooks';
 import './styles.scss';
 import { Employee } from '../../models/employee.model';
 import { GET_EMPLOYEES, GET_EMPLOYEES_BY_NAME, REMOVE_EMPLOYEE, SORT_EMPLOYEES } from './queries';
+import { SortingCriteria } from '../../models/sorting-criteria.model';
 import ListOfItems from './../list-of-items/index';
 import SearchElement from './../search-element';
-import { ContactSupportOutlined } from '@material-ui/icons';
 
 export default function EmployeeDashboard () {
   const [employeeName, setEmployeeName] = useState<string>('');
   const [employeeId, setEmployeeId] = useState<string>('');
-  const [{ sortKey, sortDirection, dataType }, setEmployeeName] = useState<>('');
+  const [{ sortKey, sortDirection, dataType }, setSortingCriteria] = useState<SortingCriteria>({} as SortingCriteria);
   const { loading, data: allEmployees } = useQuery<{ employees: Employee[] }>(
     GET_EMPLOYEES
   );
@@ -28,7 +28,7 @@ export default function EmployeeDashboard () {
   const { data: employeesSorted } = useQuery<{ employees: Employee[] }>(
     SORT_EMPLOYEES,
     {
-      variables: { sortKey: 'name', sortDirection: 'DESC', dataType: 'TEXT' },
+      variables: { sortKey: sortKey, sortDirection: sortDirection, dataType: dataType },
     }
   );
 
