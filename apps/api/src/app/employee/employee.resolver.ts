@@ -16,6 +16,11 @@ export default class EmployeeResolver {
   }
 
   @Query(() => [Employee])
+  public getEmployeesByName(@Args('name') name: string): Employee[] {
+    return this.employeeService.getByName(name);
+  }
+
+  @Query(() => [Employee])
   public sortEmployees(
     @Args('sortKey') sortKey: string,
     @Args('sortDirection') sortDirection: string,

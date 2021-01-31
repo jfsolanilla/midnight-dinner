@@ -41,6 +41,14 @@ export class EmployeeService {
   }
 
   /**
+   * Gets list of employees by name - Searching scenario
+   * @returns List of employees as an array (if more than one register matches the value)
+   */
+  getByName(name: string): Employee[] {
+    return this.employees.filter(employee => employee.name.includes(name));
+  }
+
+  /**
    * Removes employee received as param
    * @param id - Employee id
    * @returns List of employees as an array

@@ -17,6 +17,7 @@ type Employee {
 
 type Query {
   getEmployees: [Employee!]!
+  getEmployeesByName(name: String!): [Employee!]!
   sortEmployees(dataType: String!, sortDirection: String!, sortKey: String!): [Employee!]!
 }
 
