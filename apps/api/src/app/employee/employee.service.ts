@@ -42,7 +42,10 @@ export class EmployeeService {
       .filter(
         (employee: Employee) => !this.employeesRemoved.includes(employee.id)
       )
-      .filter((employee: Employee) => !name || employee.name.includes(name));
+      .filter(
+        (employee: Employee) =>
+          !name || employee.name.toLowerCase().includes(name.toLowerCase())
+      );
   }
 
   /**
