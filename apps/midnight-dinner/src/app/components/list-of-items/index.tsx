@@ -7,7 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TableSortLabel
+  TableSortLabel,
 } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -15,19 +15,26 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import { headCells } from './constants';
 import { ListProps } from '../../models/list-props.model';
-import { SortDirection } from '../../models/sort-direction.enum';
 import { StyledTableCell, StyledTableRow, useStyles } from './styles';
 
-export default function ListOfItems ({ rowsData, deleteRow, sortRow, orderBy, order }: ListProps) {
+export default function ListOfItems({
+  rowsData,
+  deleteRow,
+  sortRow,
+  orderBy,
+  order,
+}: ListProps) {
   const classes = useStyles();
   const EmptyTable = () => {
     return (
       <TableRow style={{ height: 20 }}>
-        <TableCell>
-         no results
-        </TableCell>
+        <TableCell>no results</TableCell>
       </TableRow>
     );
+  };
+
+  const getSortDirection = (order: boolean): 'asc' | 'desc' => {
+    return order ? 'asc' : 'desc';
   };
 
   return (
@@ -39,17 +46,25 @@ export default function ListOfItems ({ rowsData, deleteRow, sortRow, orderBy, or
               <TableCell
                 key={headCell.id}
                 padding={'default'}
-                sortDirection={orderBy === headCell.id ? order : false}
+                sortDirection={
+                  orderBy === headCell.id ? getSortDirection(order) : false
+                }
               >
                 <TableSortLabel
                   active={orderBy === headCell.id}
-                  direction={orderBy === headCell.id ? order as ('asc' | 'desc') : 'asc'}
-                  onClick={() => sortRow(headCell.id, order as SortDirection, headCell.dataType)}
+                  direction={
+                    orderBy === headCell.id ? getSortDirection(order) : 'asc'
+                  }
+                  onClick={() =>
+                    sortRow(headCell.id, !order, headCell.dataType)
+                  }
                 >
                   {headCell.label}
                   {orderBy === headCell.id ? (
                     <span className={classes.visuallyHidden}>
-                      {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                      {getSortDirection(order) === 'desc'
+                        ? 'sorted descending'
+                        : 'sorted ascending'}
                     </span>
                   ) : null}
                 </TableSortLabel>
@@ -58,27 +73,39 @@ export default function ListOfItems ({ rowsData, deleteRow, sortRow, orderBy, or
           </TableRow>
         </TableHead>
         <TableBody>
-          {rowsData?.length ?
+          {rowsData?.length ? (
             rowsData.map((row) => (
               <StyledTableRow key={row.name}>
                 <StyledTableCell component="th" scope="row" align="left">
                   <div>{row.name}</div>
                   <strong>{row.jobTitle}</strong>
                 </StyledTableCell>
-                <StyledTableCell id={row.id} align="left">{row.age}</StyledTableCell>
-                <StyledTableCell id={row.id} align="left">{row.userName}</StyledTableCell>
-                <StyledTableCell id={row.id} align="left">{row.hireDate}</StyledTableCell>
-                <StyledTableCell id={row.id} align="left" className={classes.actionCell}>
-                  <CreateIcon className={classes.actionIcons}/>
-                  <VisibilityIcon className={classes.actionIcons}/>
+                <StyledTableCell id={row.id} align="left">
+                  {row.age}
+                </StyledTableCell>
+                <StyledTableCell id={row.id} align="left">
+                  {row.userName}
+                </StyledTableCell>
+                <StyledTableCell id={row.id} align="left">
+                  {row.hireDate}
+                </StyledTableCell>
+                <StyledTableCell
+                  id={row.id}
+                  align="left"
+                  className={classes.actionCell}
+                >
+                  <CreateIcon className={classes.actionIcons} />
+                  <VisibilityIcon className={classes.actionIcons} />
                   <DeleteIcon
                     onClick={() => deleteRow(row)}
                     className={classes.actionIcons}
                   />
                 </StyledTableCell>
               </StyledTableRow>
-            )): <EmptyTable />
-          }
+            ))
+          ) : (
+            <EmptyTable />
+          )}
         </TableBody>
       </Table>
     </TableContainer>

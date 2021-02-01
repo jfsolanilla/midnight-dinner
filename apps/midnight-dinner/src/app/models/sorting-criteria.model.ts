@@ -1,5 +1,5 @@
 export interface SortingCriteria {
-    dataType: string;
-    sortDirection: string;
-    sortKey: string;
+  dataType: string;
+  sortDirection: boolean;
+  sortKey: string;
 }

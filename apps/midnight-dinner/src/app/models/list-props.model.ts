@@ -1,10 +1,9 @@
-import { Employee } from "./employee.model";
-import { SortDirection } from "./sort-direction.enum";
+import { Employee } from './employee.model';
 
 export interface ListProps {
   rowsData: Employee[];
   deleteRow: (row: Employee) => void;
-  sortRow: (sortKey: string, sortDirection: SortDirection, dataType: string) => void;
-  orderBy: string,
-  order: SortDirection | false;
+  sortRow: (sortKey: string, sortDirection: boolean, dataType: string) => void;
+  orderBy: string;
+  order: boolean;
 }

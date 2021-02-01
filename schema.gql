@@ -12,7 +12,7 @@ type Employee {
 }
 
 type Query {
-  getEmployees(dataType: String!, sortDirection: String!, sortKey: String!, name: String!): [Employee!]!
+  getEmployees(dataType: String!, sortDirection: Boolean!, sortKey: String!, name: String!): [Employee!]!
 }
 
 type Mutation {

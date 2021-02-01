@@ -14,7 +14,7 @@ export default class EmployeeResolver {
   public getEmployees(
     @Args('name') name: string,
     @Args('sortKey') sortKey: string,
-    @Args('sortDirection') sortDirection: string,
+    @Args('sortDirection') sortDirection: boolean,
     @Args('dataType') dataType: string
   ): Employee[] {
     return this.employeeService.getEmployees(name, sortKey, sortDirection, dataType);

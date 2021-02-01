@@ -5,7 +5,6 @@ import { useQuery } from '@apollo/react-hooks';
 import './styles.scss';
 import { Employee } from '../../models/employee.model';
 import { GET_EMPLOYEES, REMOVE_EMPLOYEE } from './queries';
-import { SortDirection } from '../../models/sort-direction.enum';
 import { State } from '../../models/state.model';
 import { StateArg } from '../../models/state-arg.model';
 import ListOfItems from './../list-of-items/index';
@@ -15,7 +14,7 @@ export default function EmployeeDashboard() {
   const [allValues, setAllValues] = useState<State>({
     employeeName: '',
     sortKey: '',
-    sortDirection: 'desc' as SortDirection,
+    sortDirection: true,
     dataType: '',
   });
   const { loading, data } = useQuery<{ getEmployees: Employee[] }>(
@@ -25,27 +24,24 @@ export default function EmployeeDashboard() {
         name: allValues.employeeName,
         sortKey: allValues.sortKey,
         sortDirection: allValues.sortDirection,
-        dataType: allValues.dataType
+        dataType: allValues.dataType,
       },
-      fetchPolicy: "network-only"
+      fetchPolicy: 'network-only',
     }
   );
-  const [removeEmployee] = useMutation(
-    REMOVE_EMPLOYEE,
-    {
-      refetchQueries: [
-        {
-          query: GET_EMPLOYEES,
-          variables: {
-            name: allValues.employeeName,
-            sortKey: allValues.sortKey,
-            sortDirection: allValues.sortDirection,
-            dataType: allValues.dataType
-          }
-        }
-      ]
-    }
-  );
+  const [removeEmployee] = useMutation(REMOVE_EMPLOYEE, {
+    refetchQueries: [
+      {
+        query: GET_EMPLOYEES,
+        variables: {
+          name: allValues.employeeName,
+          sortKey: allValues.sortKey,
+          sortDirection: allValues.sortDirection,
+          dataType: allValues.dataType,
+        },
+      },
+    ],
+  });
 
   /**
    * Executed when removing an employee
@@ -67,20 +63,20 @@ export default function EmployeeDashboard() {
   /**
    * Handles sort
    * @params sortKey - Column to be sorted
-   * @params sortDirection - asc or des
+   * @params sortDirection - boolean value
    * @params dataType - Numeric, Text or Date
    */
   const handleSort = (
     sortKey: string,
-    sortDirection: SortDirection,
+    sortDirection: boolean,
     dataType: string
   ): void => {
     changeHandler([
       {
         sortKey: sortKey,
         sortDirection: sortDirection,
-        dataType: dataType
-      }
+        dataType: dataType,
+      },
     ]);
   };
 
@@ -113,7 +109,8 @@ export default function EmployeeDashboard() {
           sortRow={handleSort}
           deleteRow={handleRemove}
           orderBy={allValues.sortKey}
-          order={allValues.sortDirection}/>
+          order={allValues.sortDirection}
+        />
       )}
     </div>
   );

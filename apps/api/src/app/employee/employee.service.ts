@@ -12,7 +12,7 @@ export class EmployeeService {
       jobTitle: 'Founder & CEO',
       age: 23,
       userName: 'jf',
-      hireDate: '02/25/2021'
+      hireDate: '02/25/2021',
     },
     {
       id: '2',
@@ -20,7 +20,7 @@ export class EmployeeService {
       jobTitle: 'Head chef',
       age: 39,
       userName: 'Vultron',
-      hireDate: '05/02/2021'
+      hireDate: '05/02/2021',
     },
     {
       id: '3',
@@ -28,8 +28,8 @@ export class EmployeeService {
       jobTitle: 'Better half',
       age: 30,
       userName: 'VultronS',
-      hireDate: '05/03/2020'
-    }
+      hireDate: '05/03/2020',
+    },
   ];
 
   /**
@@ -39,7 +39,9 @@ export class EmployeeService {
    */
   getFilteredEmployees(name: string): Employee[] {
     return this.employees
-      .filter((employee: Employee) => !this.employeesRemoved.includes(employee.id))
+      .filter(
+        (employee: Employee) => !this.employeesRemoved.includes(employee.id)
+      )
       .filter((employee: Employee) => !name || employee.name.includes(name));
   }
 
@@ -48,7 +50,7 @@ export class EmployeeService {
    * @param id - Employee id
    * @returns List of employees as an array
    */
-  remove(id: string): Employee[]  {
+  remove(id: string): Employee[] {
     this.employeesRemoved.push(id);
 
     return this.getFilteredEmployees('');
@@ -62,46 +64,51 @@ export class EmployeeService {
    * @param dataType - Data type of the key to be sorted
    * @returns List of employees as an array
    */
-	getEmployees(name: string, sortKey: string, sortDirection: string, dataType: string): Employee[] {
+  getEmployees(
+    name: string,
+    sortKey: string,
+    sortDirection: boolean,
+    dataType: string
+  ): Employee[] {
     const employees = this.getFilteredEmployees(name);
 
-		if (!employees.length || !sortKey) {
-			return employees;
+    if (!employees.length || !sortKey) {
+      return employees;
     }
 
-		switch (dataType) {
-			case 'TEXT':
-				employees.sort((a, b) => {
-					const nameA = a[sortKey].toUpperCase();
+    switch (dataType) {
+      case 'TEXT':
+        employees.sort((a, b) => {
+          const nameA = a[sortKey].toUpperCase();
           const nameB = b[sortKey].toUpperCase();
 
-					return this.getSortedBasedOnDirection(sortDirection, nameA, nameB);
+          return this.getSortedBasedOnDirection(sortDirection, nameA, nameB);
         });
 
         break;
 
-			case 'NUMERIC':
-				employees.sort((a, b) => {
-					const nameA = a[sortKey] ? +a[sortKey] : 0;
+      case 'NUMERIC':
+        employees.sort((a, b) => {
+          const nameA = a[sortKey] ? +a[sortKey] : 0;
           const nameB = b[sortKey] ? +b[sortKey] : 0;
 
-					return this.getSortedBasedOnDirection(sortDirection, nameA, nameB);
+          return this.getSortedBasedOnDirection(sortDirection, nameA, nameB);
         });
 
         break;
 
-			case 'DATE':
-				employees.sort((a, b) => {
-					const nameA = new Date(a[sortKey]);
+      case 'DATE':
+        employees.sort((a, b) => {
+          const nameA = new Date(a[sortKey]);
           const nameB = new Date(b[sortKey]);
 
-					return this.getSortedBasedOnDirection(sortDirection, nameA, nameB);
+          return this.getSortedBasedOnDirection(sortDirection, nameA, nameB);
         });
 
-				break;
+        break;
     }
 
-		return employees;
+    return employees;
   }
 
   /**
@@ -111,31 +118,29 @@ export class EmployeeService {
    * @param valueB
    * @returns Numeric value to define the sort direction
    */
-  private getSortedBasedOnDirection(sortDirection: string, valueA: any, valueB: any): number {
-		switch (sortDirection) {
-			case 'asc':
-				if (valueA < valueB) {
-					return -1;
-        }
+  private getSortedBasedOnDirection(
+    sortDirection: boolean,
+    valueA: any,
+    valueB: any
+  ): number {
+    if (sortDirection) {
+      if (valueA < valueB) {
+        return -1;
+      }
 
-				if (valueA > valueB) {
-					return 1;
-        }
+      if (valueA > valueB) {
+        return 1;
+      }
+    } else {
+      if (valueA < valueB) {
+        return 1;
+      }
 
-        break;
+      if (valueA > valueB) {
+        return -1;
+      }
+    }
 
-			case 'desc':
-				if (valueA < valueB) {
-					return 1;
-        }
-
-				if (valueA > valueB) {
-					return -1;
-        }
-
-				break;
-			default:
-				return 0;
-		}
-	}
+    return 0;
+  }
 }

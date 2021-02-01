@@ -1,3 +1,3 @@
 export interface StateArg {
-  [key: string]: string;
+  [key: string]: string | boolean;
 }
