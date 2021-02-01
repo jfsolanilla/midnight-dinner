@@ -18,7 +18,7 @@ export class EmployeeService {
       id: '2',
       name: 'Voltron Ultron',
       jobTitle: 'Head chef',
-      age: 30,
+      age: 39,
       userName: 'Vultron',
       hireDate: '05/02/2021'
     },
@@ -58,7 +58,7 @@ export class EmployeeService {
    * Gets employee list based on params received
    * @param name - Employee name
    * @param sortKey - Key to be sorted
-   * @param sortDirection - ASC OR DESC - Uppercase values
+   * @param sortDirection - asc OR desc - Uppercase values
    * @param dataType - Data type of the key to be sorted
    * @returns List of employees as an array
    */
@@ -106,14 +106,14 @@ export class EmployeeService {
 
   /**
    * Gets numeric value to define the direction of the sorting process
-   * @param sortDirection - ASC OR DESC - Uppercase values
+   * @param sortDirection - asc OR desc - Uppercase values
    * @param valueA
    * @param valueB
    * @returns Numeric value to define the sort direction
    */
   private getSortedBasedOnDirection(sortDirection: string, valueA: any, valueB: any): number {
 		switch (sortDirection) {
-			case 'ASC':
+			case 'asc':
 				if (valueA < valueB) {
 					return -1;
         }
@@ -124,7 +124,7 @@ export class EmployeeService {
 
         break;
 
-			case 'DESC':
+			case 'desc':
 				if (valueA < valueB) {
 					return 1;
         }

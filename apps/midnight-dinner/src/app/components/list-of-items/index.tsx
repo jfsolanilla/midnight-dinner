@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Paper,
   Table,
@@ -15,16 +15,11 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import { headCells } from './constants';
 import { ListProps } from '../../models/list-props.model';
+import { SortDirection } from '../../models/sort-direction.enum';
 import { StyledTableCell, StyledTableRow, useStyles } from './styles';
 
-export default function ListOfItems ({ rowsData, deleteRow }: ListProps) {
-  const [employeeName, setEmployeeName] = useState<string>('');
+export default function ListOfItems ({ rowsData, deleteRow, sortRow, orderBy, order }: ListProps) {
   const classes = useStyles();
-  const orderBy = '';
-  const order = 'desc';
-  const createSortHandler = (property: string, dataType) => {
-    console.log(dataType, property);
-  };
   const EmptyTable = () => {
     return (
       <TableRow style={{ height: 20 }}>
@@ -39,7 +34,7 @@ export default function ListOfItems ({ rowsData, deleteRow }: ListProps) {
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
-          {/* <TableRow>
+          <TableRow>
             {headCells.map((headCell) => (
               <TableCell
                 key={headCell.id}
@@ -48,8 +43,8 @@ export default function ListOfItems ({ rowsData, deleteRow }: ListProps) {
               >
                 <TableSortLabel
                   active={orderBy === headCell.id}
-                  direction={orderBy === headCell.id ? order : 'asc'}
-                  onClick={() => createSortHandler(headCell.id, headCell.dataType)}
+                  direction={orderBy === headCell.id ? order as ('asc' | 'desc') : 'asc'}
+                  onClick={() => sortRow(headCell.id, order as SortDirection, headCell.dataType)}
                 >
                   {headCell.label}
                   {orderBy === headCell.id ? (
@@ -60,7 +55,7 @@ export default function ListOfItems ({ rowsData, deleteRow }: ListProps) {
                 </TableSortLabel>
               </TableCell>
             ))}
-          </TableRow> */}
+          </TableRow>
         </TableHead>
         <TableBody>
           {rowsData?.length ?
@@ -70,10 +65,10 @@ export default function ListOfItems ({ rowsData, deleteRow }: ListProps) {
                   <div>{row.name}</div>
                   <strong>{row.jobTitle}</strong>
                 </StyledTableCell>
-                <StyledTableCell align="left">{row.age}</StyledTableCell>
-                <StyledTableCell align="left">{row.userName}</StyledTableCell>
-                <StyledTableCell align="left">{row.hireDate}</StyledTableCell>
-                <StyledTableCell align="left" className={classes.actionCell}>
+                <StyledTableCell id={row.id} align="left">{row.age}</StyledTableCell>
+                <StyledTableCell id={row.id} align="left">{row.userName}</StyledTableCell>
+                <StyledTableCell id={row.id} align="left">{row.hireDate}</StyledTableCell>
+                <StyledTableCell id={row.id} align="left" className={classes.actionCell}>
                   <CreateIcon className={classes.actionIcons}/>
                   <VisibilityIcon className={classes.actionIcons}/>
                   <DeleteIcon

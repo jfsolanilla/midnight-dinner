@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import './styles.scss';
 import { Employee } from '../../models/employee.model';
 import { GET_EMPLOYEES, REMOVE_EMPLOYEE } from './queries';
+import { SortDirection } from '../../models/sort-direction.enum';
 import { State } from '../../models/state.model';
 import { StateArg } from '../../models/state-arg.model';
 import ListOfItems from './../list-of-items/index';
@@ -14,7 +15,7 @@ export default function EmployeeDashboard() {
   const [allValues, setAllValues] = useState<State>({
     employeeName: '',
     sortKey: '',
-    sortDirection: '',
+    sortDirection: 'desc' as SortDirection,
     dataType: '',
   });
   const { loading, data } = useQuery<{ getEmployees: Employee[] }>(
@@ -22,10 +23,11 @@ export default function EmployeeDashboard() {
     {
       variables: {
         name: allValues.employeeName,
-        sortKey: '',
-        sortDirection: '',
-        dataType: '',
+        sortKey: allValues.sortKey,
+        sortDirection: allValues.sortDirection,
+        dataType: allValues.dataType
       },
+      fetchPolicy: "network-only"
     }
   );
   const [removeEmployee] = useMutation(
@@ -36,16 +38,14 @@ export default function EmployeeDashboard() {
           query: GET_EMPLOYEES,
           variables: {
             name: allValues.employeeName,
-            sortKey: '',
-            sortDirection: '',
-            dataType: '',
-          },
-        },
-      ],
-      fetchPolicy: 'no-cache'
+            sortKey: allValues.sortKey,
+            sortDirection: allValues.sortDirection,
+            dataType: allValues.dataType
+          }
+        }
+      ]
     }
   );
-
 
   /**
    * Executed when removing an employee
@@ -62,6 +62,26 @@ export default function EmployeeDashboard() {
    */
   const handleSearch = (searchValue: string): void => {
     changeHandler([{ employeeName: searchValue }]);
+  };
+
+  /**
+   * Handles sort
+   * @params sortKey - Column to be sorted
+   * @params sortDirection - asc or des
+   * @params dataType - Numeric, Text or Date
+   */
+  const handleSort = (
+    sortKey: string,
+    sortDirection: SortDirection,
+    dataType: string
+  ): void => {
+    changeHandler([
+      {
+        sortKey: sortKey,
+        sortDirection: sortDirection,
+        dataType: dataType
+      }
+    ]);
   };
 
   /**
@@ -88,7 +108,12 @@ export default function EmployeeDashboard() {
       {loading ? (
         <p>Loading ...</p>
       ) : (
-        <ListOfItems rowsData={data?.getEmployees} deleteRow={handleRemove} />
+        <ListOfItems
+          rowsData={data?.getEmployees}
+          sortRow={handleSort}
+          deleteRow={handleRemove}
+          orderBy={allValues.sortKey}
+          order={allValues.sortDirection}/>
       )}
     </div>
   );
