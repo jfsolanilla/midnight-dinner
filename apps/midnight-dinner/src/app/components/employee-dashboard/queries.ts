@@ -3,6 +3,7 @@ import { gql } from 'apollo-boost';
 const GET_EMPLOYEES = gql`
   query {
     getEmployees {
+      id,
       name,
       jobTitle,
       age,
@@ -15,6 +16,7 @@ const GET_EMPLOYEES = gql`
 const GET_EMPLOYEES_BY_NAME = gql`
   query ($name: String!) {
     getEmployeesByName(name: $name) {
+      id,
       name,
       jobTitle,
       age,
@@ -31,6 +33,7 @@ const SORT_EMPLOYEES = gql`
       sortDirection: $sortDirection
       dataType: $dataType
     ) {
+      id,
       name
       jobTitle
       age
@@ -43,6 +46,7 @@ const SORT_EMPLOYEES = gql`
 const REMOVE_EMPLOYEE = gql`
   mutation($id: String!) {
     removeEmployee(id: $id) {
+      id,
       name
       jobTitle
       age

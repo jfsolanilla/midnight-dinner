@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { useQuery } from '@apollo/react-hooks';
 
@@ -12,11 +12,14 @@ import SearchElement from './../search-element';
 export default function EmployeeDashboard () {
   const [employeeName, setEmployeeName] = useState<string>('');
   const [employeeId, setEmployeeId] = useState<string>('');
-  const [{ sortKey, sortDirection, dataType }, setSortingCriteria] = useState<SortingCriteria>({} as SortingCriteria);
-  const { loading, data: allEmployees } = useQuery<{ employees: Employee[] }>(
+  const [
+    { sortKey, sortDirection, dataType },
+    setSortingCriteria,
+  ] = useState<SortingCriteria>({} as SortingCriteria);
+  const { loading, data: allEmployees } = useQuery<{ getEmployees: Employee[] }>(
     GET_EMPLOYEES
   );
-  const { data: employeeByName } = useQuery<{ employees: Employee[] }>(
+  const { data: employeeByName } = useQuery<{ getEmployeesByName: Employee[] }>(
     GET_EMPLOYEES_BY_NAME,
     {
       variables: { name: employeeName }
@@ -25,20 +28,25 @@ export default function EmployeeDashboard () {
   const [removeEmployee, { data: remainingEmployees }] = useMutation(
     REMOVE_EMPLOYEE
   );
-  const { data: employeesSorted } = useQuery<{ employees: Employee[] }>(
-    SORT_EMPLOYEES,
-    {
-      variables: { sortKey: sortKey, sortDirection: sortDirection, dataType: dataType },
-    }
-  );
+  // const { data: employeesSorted } = useQuery<{ sortEmployees: Employee[] }>(
+  //   SORT_EMPLOYEES,
+  //   {
+  //     variables: { sortKey: sortKey, sortDirection: sortDirection, dataType: dataType },
+  //   }
+  // );
+  const [employees, setEmployee] = useState<Employee[]>();
 
   /**
    * Executed when removing an employee
    */
-  const handleRemove = (removeValue: string): void => {
+  const handleRemove = (row: Employee): void => {
     if (window.confirm('Do you want to delete this employee?')) {
-      removeEmployee({ variables: { id: removeValue } });
-      setEmployeeId('');
+      const employeeId = row.id;
+
+      setEmployeeId(employeeId);
+      removeEmployee({ variables: { id: employeeId } });
+      //setEmployeeId('');
+      setEmployee(remainingEmployees);
     }
   }
 
@@ -46,25 +54,29 @@ export default function EmployeeDashboard () {
    * Handles search for a particular employee
    * @params searchValue - Value to be searched
    */
-  // IMPORTANT THIS FUNCTION PROBABLY NOT NEEDED - ONLY WITH setEmployeeName WOULD BE ENOUGH
-  // const handleSearch = (searchValue: string): void => {
-  //   setEmployeeName(searchValue);
-  // }
+  const handleSearch = (searchValue: string): void => {
+    setEmployeeName(searchValue);
+    setEmployee(employeeByName?.getEmployeesByName);
+  }
 
-  // if (loading) return <p>Loading ...</p>;
+  const getData = (): Employee[] => {
+    return remainingEmployees?.removeEmployee || employeeByName?.getEmployeesByName || allEmployees?.getEmployees;
+    // employeesSorted ||          // Sorting
+    // employeeByName ||           // Search
+    // allEmployees?.getEmployees  // All employees
+  }
+
+  if (loading) return <p>Loading ...</p>;
 
   return (
     <div className="employee-dashboard">
       <div className="employee-dashboard__search-wrapper">
         <span className="employee-dashboard__employee-label">Employees</span>
         <span>
-          <SearchElement clickHandler={setEmployeeName} />
+          <SearchElement clickHandler={handleSearch} />
         </span>
       </div>
-      <button onClick={ () => handleRemove('2') }>
-        <span>Login or Register</span>
-      </button>
-      <ListOfItems />
+      <ListOfItems rowsData={ getData() } deleteRow={handleRemove}/>
     </div>
   );
 }

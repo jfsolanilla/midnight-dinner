@@ -1,3 +1,5 @@
 export interface SortingCriteria {
-    sortKey: string, sortDirection: string, dataType: string
+    dataType: string;
+    sortDirection: string;
+    sortKey: string;
 }
