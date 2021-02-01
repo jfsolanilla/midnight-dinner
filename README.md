@@ -7,7 +7,7 @@ About additional features:
 * Edit employee: After clicking the edit icon, a modal form should be displayed with the fields to be modified by the usr. After submitting the new values,
 the table should be updated.
     - This process would require a new mutation for the info to be modified in the DB.
-    - In the employeeService, after mutating the info, employees should be fetched again.
+    - In the employeeService, after mutating the info, employees should be refetched.
 * View employee: After clicking the view icon, a modal should be displayed with the employee details.
     - Use the values already loaded in the component would be enough.
 
