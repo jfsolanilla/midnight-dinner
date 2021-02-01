@@ -11,10 +11,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
       marginLeft: 0,
       width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(1),
-        width: 'auto'
-      },
     },
     inputInput: {
       padding: theme.spacing(1, 1, 1, 0),
@@ -22,12 +18,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
       transition: theme.transitions.create('width'),
       width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        width: '12ch',
-        '&:focus': {
-          width: '20ch'
-        },
-      },
     },
     searchIcon: {
       paddingLeft: '9px',

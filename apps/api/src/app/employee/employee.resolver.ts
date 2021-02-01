@@ -11,26 +11,13 @@ export default class EmployeeResolver {
   ) {}
 
   @Query(() => [Employee])
-  public getEmployees(): Employee[] {
-    return this.employeeService.get();
-  }
-
-  @Query(() => [Employee])
-  public getEmployeesByName(@Args('name') name: string): Employee[] {
-    return this.employeeService.getByName(name);
-  }
-
-  @Query(() => [Employee])
-  public sortEmployees(
+  public getEmployees(
+    @Args('name') name: string,
     @Args('sortKey') sortKey: string,
     @Args('sortDirection') sortDirection: string,
     @Args('dataType') dataType: string
   ): Employee[] {
-    return this.employeeService.sortEmployees(
-      sortKey,
-      sortDirection,
-      dataType
-    );
+    return this.employeeService.getEmployees(name, sortKey, sortDirection, dataType);
   }
 
   @Mutation(() => [Employee])

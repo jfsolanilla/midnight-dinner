@@ -12,9 +12,7 @@ type Employee {
 }
 
 type Query {
-  getEmployees: [Employee!]!
-  getEmployeesByName(name: String!): [Employee!]!
-  sortEmployees(dataType: String!, sortDirection: String!, sortKey: String!): [Employee!]!
+  getEmployees(dataType: String!, sortDirection: String!, sortKey: String!, name: String!): [Employee!]!
 }
 
 type Mutation {

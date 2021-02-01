@@ -33,19 +33,14 @@ export class EmployeeService {
   ];
 
   /**
-   * Gets list of employees
+   * Gets list of filtered employees
+   * @param name - Employee name
    * @returns List of employees as an array
    */
-  get(): Employee[] {
-    return this.employees.filter((employee: Employee) => !this.employeesRemoved.includes(employee.id));
-  }
-
-  /**
-   * Gets list of employees by name - Searching scenario
-   * @returns List of employees as an array (if more than one register matches the value)
-   */
-  getByName(name: string): Employee[] {
-    return this.employees.filter((employee: Employee) => employee.name.includes(name));
+  getFilteredEmployees(name: string): Employee[] {
+    return this.employees
+      .filter((employee: Employee) => !this.employeesRemoved.includes(employee.id))
+      .filter((employee: Employee) => !name || employee.name.includes(name));
   }
 
   /**
@@ -53,23 +48,24 @@ export class EmployeeService {
    * @param id - Employee id
    * @returns List of employees as an array
    */
-  remove(id: string): Employee[] {
+  remove(id: string): Employee[]  {
     this.employeesRemoved.push(id);
 
-    return this.get();
+    return this.getFilteredEmployees('');
   }
 
   /**
-   * Sorts employee list based on params received
+   * Gets employee list based on params received
+   * @param name - Employee name
    * @param sortKey - Key to be sorted
    * @param sortDirection - ASC OR DESC - Uppercase values
    * @param dataType - Data type of the key to be sorted
-   * @returns Sorted list of employees as an array
+   * @returns List of employees as an array
    */
-	sortEmployees(sortKey: string, sortDirection: string, dataType: string): Employee[] {
-    const employees = this.get();
+	getEmployees(name: string, sortKey: string, sortDirection: string, dataType: string): Employee[] {
+    const employees = this.getFilteredEmployees(name);
 
-		if (!employees.length) {
+		if (!employees.length || !sortKey) {
 			return employees;
     }
 

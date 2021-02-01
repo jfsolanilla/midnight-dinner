@@ -1,43 +1,13 @@
 import { gql } from 'apollo-boost';
 
 const GET_EMPLOYEES = gql`
-  query {
-    getEmployees {
+  query($name: String!, $sortKey: String!, $sortDirection: String!, $dataType: String!) {
+    getEmployees(name: $name, sortKey: $sortKey, sortDirection: $sortDirection, dataType: $dataType) {
       id,
       name,
       jobTitle,
       age,
       userName,
-      hireDate
-    }
-  }
-`;
-
-const GET_EMPLOYEES_BY_NAME = gql`
-  query ($name: String!) {
-    getEmployeesByName(name: $name) {
-      id,
-      name,
-      jobTitle,
-      age,
-      userName,
-      hireDate
-    }
-  }
-`;
-
-const SORT_EMPLOYEES = gql`
-  query($sortKey: String!, $sortDirection: String!, $dataType: String!) {
-    sortEmployees(
-      sortKey: $sortKey
-      sortDirection: $sortDirection
-      dataType: $dataType
-    ) {
-      id,
-      name
-      jobTitle
-      age
-      userName
       hireDate
     }
   }
@@ -57,8 +27,6 @@ const REMOVE_EMPLOYEE = gql`
 `;
 
 export {
-    GET_EMPLOYEES_BY_NAME,
     GET_EMPLOYEES,
-    REMOVE_EMPLOYEE,
-    SORT_EMPLOYEES
+    REMOVE_EMPLOYEE
 };
